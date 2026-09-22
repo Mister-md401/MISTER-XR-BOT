@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MISTER XR BOT — WhatsApp Pairing</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+  min-height:100vh;
+  color:white;
+  background:
+    radial-gradient(circle at 50% 0%,#064b50 0%,#03151b 30%,#02060d 75%);
+  overflow-x:hidden;
+}
+
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(120deg,transparent 45%,rgba(0,238,255,.035) 50%,transparent 55%);
+}
+
+.container{
+  width:100%;
+  max-width:1100px;
+  margin:auto;
+  padding:18px;
+}
+
+/* HEADER */
+
+.header{
+  text-align:center;
+  padding:15px 0 25px;
+}
+
+.flag{
+  font-size:42px;
+  margin-bottom:8px;
+}
+
+.hero-img{
+  width:145px;
+  height:145px;
+  object-fit:cover;
+  border-radius:50%;
+  border:4px solid #00eaff;
+  box-shadow:
+    0 0 15px #00eaff,
+    0 0 45px rgba(0,234,255,.45);
+  margin-bottom:14px;
+}
+
+.logo-title{
+  font-size:clamp(34px,8vw,70px);
+  font-weight:900;
+  letter-spacing:2px;
+  color:white;
+  text-shadow:
+    0 0 8px #00eaff,
+    0 0 25px #00eaff;
+}
+
+.logo-title span{
+  color:#00eaff;
+}
+
+.system{
+  margin-top:8px;
+  font-size:clamp(15px,4vw,25px);
+  font-weight:900;
+  letter-spacing:5px;
+  color:#00eaff;
+}
+
+.subtitle{
+  margin-top:10px;
+  color:#c8d8dc;
+  font-size:15px;
+}
+
+/* MAIN CARD */
+
+.panel{
+  border:2px solid #00dffc;
+  border-radius:25px;
+  background:rgba(2,16,22,.90);
+  box-shadow:
+    0 0 15px rgba(0,238,255,.25),
+    0 0 45px rgba(0,238,255,.08);
+  padding:22px;
+}
+
+/* SECTION */
+
+.section{
+  margin-bottom:20px;
+}
+
+.section-title{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-size:20px;
+  font-weight:800;
+  margin-bottom:5px;
+}
+
+.icon{
+  width:42px;
+  height:42px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  border-radius:50%;
+  background:#042d35;
+  border:2px solid #00eaff;
+  color:#00eaff;
+  font-size:22px;
+}
+
+.section-subtitle{
+  color:#9eb3b8;
+  font-size:13px;
+  margin-left:54px;
+  margin-bottom:12px;
+}
+
+/* SELECT */
+
+select,
+input{
+  width:100%;
+  background:#061b22;
+  color:white;
+  border:2px solid #009dcc;
+  border-radius:15px;
+  padding:16px;
+  font-size:17px;
+  outline:none;
+}
+
+select:focus,
+input:focus{
+  border-color:#00f0ff;
+  box-shadow:0 0 15px rgba(0,238,255,.25);
+}
+
+select option{
+  background:#07171c;
+  color:white;
+}
+
+/* PHONE */
+
+.phone{
+  display:flex;
+  gap:8px;
+}
+
+.country-code{
+  width:105px;
+  text-align:center;
+  font-weight:bold;
+  color:#00eaff;
+}
+
+.number{
+  flex:1;
+}
+
+/* BUTTON */
+
+button{
+  width:100%;
+  border:0;
+  border-radius:16px;
+  padding:18px;
+  font-size:18px;
+  font-weight:900;
+  color:white;
+  cursor:pointer;
+
+  background:linear-gradient(
+    90deg,
+    #00aebd,
+    #00eaff,
+    #00aebd
+  );
+
+  box-shadow:
+    0 0 12px rgba(0,238,255,.55),
+    0 0 30px rgba(0,238,255,.20);
+
+  transition:.2s;
+}
+
+button:hover{
+  transform:translateY(-2px);
+  box-shadow:
+    0 0 20px rgba(0,238,255,.8),
+    0 0 45px rgba(0,238,255,.35);
+}
+
+button:active{
+  transform:scale(.98);
+}
+
+/* RESULT */
+
+.result{
+  margin-top:20px;
+  border:2px solid #008ca5;
+  border-radius:20px;
+  padding:20px;
+  background:rgba(3,25,31,.85);
+  display:none;
+}
+
+.result-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:15px;
+  align-items:center;
+}
+
+.result-title{
+  font-size:20px;
+  font-weight:bold;
+}
+
+.result-small{
+  color:#8faeb5;
+  font-size:13px;
+  margin-top:5px;
+}
+
+.pair-code{
+  min-height:65px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border:2px solid #008ca5;
+  border-radius:14px;
+
+  color:#00eaff;
+  font-size:27px;
+  font-weight:900;
+  letter-spacing:5px;
+
+  text-shadow:0 0 12px #00eaff;
+}
+
+.status{
+  border-left:1px solid #244b52;
+  padding-left:18px;
+  color:#d8e4e7;
+  font-size:14px;
+  line-height:1.5;
+}
+
+/* ERROR */
+
+.error{
+  margin-top:15px;
+  padding:13px;
+  border:1px solid #ff2875;
+  border-radius:13px;
+  color:#ff739e;
+  background:rgba(255,0,80,.06);
+  display:none;
+}
+
+/* FEATURES */
+
+.features{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin-top:18px;
+}
+
+.feature{
+  text-align:center;
+  padding:15px 8px;
+  color:#c7d9dd;
+  font-size:13px;
+}
+
+.feature-icon{
+  font-size:25px;
+  margin-bottom:6px;
+  color:#00eaff;
+}
+
+/* FOOTER */
+
+.footer{
+  text-align:center;
+  margin-top:22px;
+  padding:18px;
+}
+
+.footer-brand{
+  color:#00eaff;
+  font-size:17px;
+  font-weight:bold;
+}
+
+.haiti{
+  margin-top:13px;
+  display:inline-block;
+  padding:8px 25px;
+  border-radius:20px;
+
+  background:
+    linear-gradient(
+      #001bff 0 50%,
+      #ff1838 50% 100%
+    );
+
+  box-shadow:0 0 15px rgba(0,234,255,.25);
+
+  font-weight:bold;
+}
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+  .container{
+    padding:12px;
+  }
+
+  .panel{
+    padding:15px;
+    border-radius:20px;
+  }
+
+  .hero-img{
+    width:115px;
+    height:115px;
+  }
+
+  .system{
+    letter-spacing:2px;
+  }
+
+  .result-grid{
+ 

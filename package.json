@@ -1,0 +1,20 @@
+{
+  "name": "mister-xr-bot",
+  "version": "1.0.0",
+  "description": "MISTER XR BOT - WhatsApp Bot with Pairing System",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "latest",
+    "express": "latest",
+    "pino": "latest",
+    "qrcode": "latest",
+    "axios": "latest",
+    "dotenv": "latest"
+  }
+}
